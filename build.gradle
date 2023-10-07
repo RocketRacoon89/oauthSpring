@@ -45,6 +45,11 @@ dependencies {
 
 	implementation 'com.auth0:mvc-auth-commons:1.+'
 
+// https://mvnrepository.com/artifact/com.konghq/unirest-java
+	implementation group: 'com.konghq', name: 'unirest-java', version: '3.14.5'
+
+
+
 }
 
 tasks.named('test') {
