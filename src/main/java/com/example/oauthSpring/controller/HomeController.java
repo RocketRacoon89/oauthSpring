@@ -20,11 +20,15 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal OidcUser principal) {
+        System.out.println("YA TUT");
+        System.out.println(principal.getClaims());
+        System.out.println(model.toString());
         if (principal != null) {
             model.addAttribute("profile", principal.getClaims());
         }
         return "index";
     }
+
 
     @GetMapping("/secured")
     public String secured() {
