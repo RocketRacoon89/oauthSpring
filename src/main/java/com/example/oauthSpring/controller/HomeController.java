@@ -1,9 +1,7 @@
 package com.example.oauthSpring.controller;
 
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -15,8 +13,9 @@ import java.io.IOException;
 import java.util.Map;
 
 @Controller
-//@RestController
 public class HomeController {
+
+
 
 
     @GetMapping("/")
@@ -31,14 +30,25 @@ public class HomeController {
     @GetMapping("/secured")
     public String secured() {
 
-//        HttpResponse<String> response = Unirest.post("https://{yourDomain}/oauth/token")
-//                .header("content-type", "application/x-www-form-urlencoded")
-//                .body("grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&audience=YOUR_API_IDENTIFIER")
-//                .asString();
-
-
         return "secured";
     }
+
+    @GetMapping("/token")
+    public String getToken() throws IOException {
+
+                HttpResponse<String> response = Unirest.post("https://{yourDomain}/oauth/token")
+                .header("content-type", "application/x-www-form-urlencoded")
+                .body("grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&audience=YOUR_API_IDENTIFIER")
+                .asString();
+
+
+        System.out.println(response.getBody());
+        System.out.println(response.getStatus());
+        System.out.println(response.getStatusText());
+
+        return "token";
+    }
+
 
 
     @GetMapping("/secured1")
@@ -53,13 +63,6 @@ public class HomeController {
         System.out.println(oAuth2User.getName());
 
         return oAuth2User.getAttributes();
-    }
-
-    @RequestMapping(value = "/login/oauth2/code/auth0", method = RequestMethod.GET)
-    protected void getCallback(final HttpServletRequest req, final HttpServletResponse res) throws ServletException, IOException {
-//        handle(req, res);
-        System.out.println(req.toString());
-        res.sendRedirect("/login/oauth2/code/auth0");
     }
 
     @GetMapping("/login")
